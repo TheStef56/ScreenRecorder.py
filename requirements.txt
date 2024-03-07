@@ -1,0 +1,7 @@
+pyautogui
+opencv-python
+opencv-contrib-python
+numpy
+moviepy
+soundcard
+soundfile
