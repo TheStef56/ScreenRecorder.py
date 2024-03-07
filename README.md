@@ -26,6 +26,6 @@ sc.start_recording()
 
 # do some stuff or set a timeout to record until the end of the timeout
 
-sc.stop_recording() # this is required to stop the recording and process audio and video into a file.mp4
+sc.stop_recording() # this is needed to stop the recording and process audio and video into a file.mp4
 
 ```
