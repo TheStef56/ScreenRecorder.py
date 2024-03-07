@@ -2,6 +2,8 @@
 
 A simple python3 module to record the screen with desktop audio
 
+--------------------------------------------------------------------
+
 **Requirements**
 
 *You can install the dependencies by running:*
@@ -9,6 +11,8 @@ A simple python3 module to record the screen with desktop audio
 ```console
 python3 -m pip install -r requirements.txt
 ```
+
+--------------------------------------------------------------------
 
 **Usage**
 
