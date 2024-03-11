@@ -1,4 +1,4 @@
-import time, threading, pyautogui, cv2, numpy
+import time, threading, pyautogui, cv2, numpy, os
 from moviepy.editor import AudioFileClip, VideoFileClip
 import soundcard
 import soundfile
@@ -21,11 +21,13 @@ class ScreenRecorder():
         self._num_frames = 0
 
     def start_recording(self):
+        if not os.path.exists("./recordings/"):
+            os.makedirs("./recordings/")
         self._recording = True
         if self._include_audio:
             t = threading.Thread(target=self._audio_thread)
             t.start()
-        self._out = cv2.VideoWriter(f"{self._prefix}.avi", self._fourcc, 20.0, (self._screen_width, self._screen_height))
+        self._out = cv2.VideoWriter(f"./recordings/{self._prefix}.avi", self._fourcc, 30.0, (self._screen_width, self._screen_height))
         t = threading.Thread(target=self._video_thread)
         t.start()
         self._start_time = time.time()
@@ -52,19 +54,19 @@ class ScreenRecorder():
             
             while self._recording:
                 try:
-                    buffer, samp = soundfile.read(f"{self._prefix}.wav")
+                    buffer, samp = soundfile.read(f"./recordings/{self._prefix}.wav")
                 except:
                     buffer = []
                 data = mic.record(numframes=self._sample_rate)
                 buffer = list(buffer)
                 buffer += list(data)
-                soundfile.write(file=f"{self._prefix}.wav", data=buffer, samplerate=self._sample_rate)
+                soundfile.write(file=f"./recordings/{self._prefix}.wav", data=buffer, samplerate=self._sample_rate)
     
     def _save_video(self):
-        video_clip = VideoFileClip(f"{self._prefix}.avi")
-        audio_clip = AudioFileClip(f"{self._prefix}.wav")
+        video_clip = VideoFileClip(f"./recordings/{self._prefix}.avi")
+        audio_clip = AudioFileClip(f"./recordings/{self._prefix}.wav")
         actual_frame_rate = self._num_frames / (time.time() - self._start_time)
         final_clip = video_clip.set_audio(audio_clip)
         final_clip = final_clip.set_duration(audio_clip.duration)  
         final_clip = final_clip.set_fps(actual_frame_rate)
-        final_clip.write_videofile(f"{self._prefix}.mp4", codec="libx264")
+        final_clip.write_videofile(f"./recordings/{self._prefix}.mp4", codec="libx264")
